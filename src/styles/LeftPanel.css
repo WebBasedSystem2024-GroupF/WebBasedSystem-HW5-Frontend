@@ -49,6 +49,12 @@
   background-color: #f0f0f0;
 }
 
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .chat-messages {
   flex-grow: 1;
   overflow-y: auto;

@@ -33,6 +33,17 @@ body {
   margin: 0 20px;
 }
 
+button.img_btn {
+  background: none;
+  border: none;
+  border-radius: 16px;
+  padding: 8px;
+  cursor: pointer;
+}
+button.img_btn:hover {
+  background: #f0f0f0;
+}
+
 .user-menu button {
   margin-left: 10px;
 }
@@ -83,19 +94,4 @@ body {
 .map {
   height: 50%;
   background-color: #e9ecef;
-}
-
-.recommendation-list {
-  display: flex;
-  position: absolute;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.restaurant-card {
-  width: 200px;
-  padding: 10px;
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
-  background-color: white;
 }

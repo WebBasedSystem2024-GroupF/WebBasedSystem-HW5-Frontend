@@ -1,0 +1,131 @@
+.modal {
+  position: absolute;
+  top: 10%;
+  left: 10px;
+  width: 250px;
+  height: 80%;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.modal h3 {
+  margin-top: 0;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #FF6700;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.search-criteria {
+  margin-bottom: 16px;
+}
+
+.more-criteria {
+  margin-top: 10px;
+}
+
+.recommendation-list {
+  display: flex;
+  position: absolute;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.restaurant-card {
+  border-radius: 5px;
+  background-color: white;
+}
+
+
+
+.criteria-details {
+  position: relative;
+}
+
+.criteria-item {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.criteria-bar {
+  flex: 2;
+  height: 36px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+}
+
+.criteria-fill {
+  height: 100%;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.criteria-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 14px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.criteria-label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.criteria-percentage {
+  font-size: 14px;
+}
+
+.gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+  z-index: 1;
+}
+
+.toggle-button {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.toggle-button:hover {
+  background-color: #f0f0f0;
+}

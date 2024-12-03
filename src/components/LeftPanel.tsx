@@ -1,7 +1,21 @@
 import React, { useRef, useState } from 'react';
-import SendFill from '@/assets/send_fill.svg';
-import '@/styles/LeftPanel.css';
 import useResizer from '../hooks/useResizer';
+import SendFill from '@/assets/send_fill.svg';
+import Refresh from '@/assets/refresh.svg';
+import '@/styles/LeftPanel.css';
+
+const recommendationPrompt = [
+  'Recommend a place for dinner with friends',
+  'Recommend a restaurant with a comfortable atmosphere',
+  'Recommend a place for a romantic date',
+  'Recommend a place for a business meeting',
+  'Recommend a place for a family dinner',
+  'Recommend a place for a birthday party',
+  'Recommend a place for a wedding anniversary',
+  'Recommend a place for a graduation party',
+  'Recommend a place for a baby shower',
+  'Recommend a place for a bridal shower',
+];
 
 const LeftPanel: React.FC = () => {
   const resizerRef = useRef<HTMLDivElement>(null);
@@ -20,10 +34,14 @@ const LeftPanel: React.FC = () => {
 
   const handleSendMessage = () => {
     if (text.trim()) {
-      setMessages([...messages, { text, isUser: true }]);
+      setMessages([...messages, { text, isUser: true }, { text: 'I am a bot', isUser: false }]);
       setText('');
     }
   };
+
+  const clickRecommendation = (text: string) => {
+    setMessages([...messages, { text, isUser: true }, { text: 'I am a bot', isUser: false }]);
+  }
 
   return (
     <aside className="panel left-panel"
@@ -34,15 +52,20 @@ const LeftPanel: React.FC = () => {
         <div className="recommendation-texts">
           <h2>Please enter the restaurant you are looking for</h2>
           <div className="recommendation-buttons">
-            <button>Recommend a place for dinner with friends</button>
-            <button>Recommend a restaurant with a comfortable atmosphere</button>
+            {recommendationPrompt.slice(0, 2).map((text, index) => (
+              <button key={index} onClick={() => clickRecommendation(text)}>
+                {text}
+              </button>
+            ))}
           </div>
         </div>
       ) : (
         <>
           <div className="chat-header">
             <h2>Chat</h2>
-            <button aria-label='new chat'></button>
+            <button className='img_btn' aria-label='new chat' title='new chat'>
+              <img src={Refresh} alt="" />
+            </button>
           </div>
           <div className="chat-messages">
             {messages.map((message, index) => (
