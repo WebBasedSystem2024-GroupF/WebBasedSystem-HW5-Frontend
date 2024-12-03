@@ -1,42 +1,101 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  height: 50px;
+  padding: 0 20px;
+  background-color: white;
+  color: #FF6700;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.header .logo {
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.card {
-  padding: 2em;
+.search-bar {
+  flex-grow: 1;
+  margin: 0 20px;
 }
 
-.read-the-docs {
-  color: #888;
+.user-menu button {
+  margin-left: 10px;
+}
+
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.panel {
+  height: calc(100vh - 50px - 16px);
+  position: relative;
+  width: 300px;
+  padding: 8px;
+  overflow: auto;
+}
+
+.center-panel {
+  height: calc(100vh - 50px);
+  flex-grow: 1;
+  padding: 0;
+  overflow: auto;
+}
+
+.resizer {
+  width: 10px;
+  cursor: ew-resize;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.left-panel > .resizer {
+  right: 0;
+}
+
+.right-panel > .resizer {
+  left: 0;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map {
+  height: 50%;
+  background-color: #e9ecef;
+}
+
+.recommendation-list {
+  display: flex;
+  position: absolute;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.restaurant-card {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: white;
 }

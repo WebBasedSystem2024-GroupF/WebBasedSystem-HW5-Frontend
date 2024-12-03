@@ -1,0 +1,95 @@
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  padding: 8px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel h2 {
+  margin-bottom: 20px;
+}
+
+.left-panel .recommendation-texts {
+  display: flex;
+  flex: auto;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #777777;
+  gap: 10px;
+}
+
+.left-panel .recommendation-texts > h2 {
+  text-align: center;
+  width: 200px;
+  margin: 16px auto;
+}
+
+.recommendation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.recommendation-buttons button {
+  width: 148px;
+  padding: 10px;
+  border-radius: 16px;
+  border: none;
+  color: #777777;
+  cursor: pointer;
+  background-color: #F0F0F0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.recommendation-buttons button:hover {
+  background-color: #f0f0f0;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  border-radius: 16px;
+  padding: 8px;
+  height: 40px;
+  background-color: #f0f0f0;
+}
+
+.chat-input input {
+  padding-left: 8px;
+  border-radius: 5px;
+  background: none;
+  border: none;
+  outline: none;
+  flex-grow: 1;
+}
+
+.chat-input button {
+  line-height: 0;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 16px;
+  background-color: #FF6700;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: #e65c00;
+}
+
+.chat-input button img {
+  position: relative;
+  left: 0;
+  bottom: -1px;
+  transition: all 0.1s ease;
+}
+
+.chat-input button:hover img {
+  left: 1px;
+  bottom: 0;
+}
