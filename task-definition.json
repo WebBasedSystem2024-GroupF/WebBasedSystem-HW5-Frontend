@@ -37,7 +37,7 @@
     }
   ],
   "family": "web-system-hw5",
-  "networkMode": "bridge",
+  "networkMode": "awsvpc",
   "cpu": "200",
   "memory": "307"
 }
