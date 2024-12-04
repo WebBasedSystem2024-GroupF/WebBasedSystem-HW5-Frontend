@@ -1,32 +1,31 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14
-
-# Set the working directory
+# Stage 1: Base image
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 WORKDIR /app
+COPY . .
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Ensure TypeScript is installed globally
+RUN pnpm add -g typescript
 
 # Install dependencies
 RUN pnpm install
 
-# Copy the rest of the application code
-COPY . .
+# Stage 2: Install production dependencies
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Build the application
+# Stage 3: Build the application
+FROM base AS build
+WORKDIR /app
+COPY . .
 RUN pnpm run build
 
-# Use an official Nginx image to serve the built application
+# Stage 4: Serve the built application with Nginx
 FROM nginx:alpine
-
-# Copy the built application from the previous stage
-COPY --from=0 /app/build /usr/share/nginx/html
-
-# Copy custom Nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

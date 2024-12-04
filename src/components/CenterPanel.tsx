@@ -1,12 +1,13 @@
 import React from 'react';
-import Map from './Map';
-import RecommendationList from './RecommendationList';
+import GoogleMapComponent from './GoogleMap';
+import RecommendationModal from './RecommendationModal';
 
 const CenterPanel: React.FC = () => {
   return (
     <main className="panel center-panel">
-      <RecommendationList />
-      <Map />
+      <GoogleMapComponent>
+        <RecommendationModal />
+      </GoogleMapComponent>
     </main>
   );
 };

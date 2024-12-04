@@ -87,6 +87,12 @@
    pnpm dev
    ```
 
+#### 환경설정
+google map api key를 발급받아 .env 파일에 추가
+```
+VITE_GOOGLE_MAP_API_KEY=YOUR_API_KEY
+```
+
 #### **빌드**
 
 프로덕션 빌드 생성:
@@ -99,6 +105,15 @@ pnpm build
 프로덕션 빌드 서빙:
 ```sh
 pnpm serve
+```
+
+### 5-1 docker로 실행:
+``` docker
+# Build the Docker image
+docker build -t react-nginx-app .
+
+# Run the Docker container
+docker run -p 80:80 react-nginx-app
 ```
 
 ---

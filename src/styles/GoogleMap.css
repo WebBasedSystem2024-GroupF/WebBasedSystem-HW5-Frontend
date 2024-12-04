@@ -2,12 +2,11 @@
   position: absolute;
   top: 10%;
   left: 10px;
-  width: 250px;
+  width: 280px;
   height: 80%;
   background-color: white;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 16px;
   overflow-y: auto;
   z-index: 1000;
 }
@@ -25,12 +24,28 @@
   margin-top: 0;
 }
 
+.modal-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px;
+  padding: 8px;
+  background: white;
+  z-index: 2000;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.9);
+}
+
+.modal-body {
+  margin: 16px;
+}
+
 .back-button {
   background: none;
   border: none;
   color: #FF6700;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
 .search-criteria {
@@ -45,15 +60,20 @@
   display: flex;
   position: absolute;
   flex-wrap: wrap;
+  width: calc(100% - 32px);
+  padding-bottom: 16px;
   gap: 10px;
+}
+
+.recommendation-list img {
+  width: 100%;
+  border-radius: 5px;
 }
 
 .restaurant-card {
   border-radius: 5px;
   background-color: white;
 }
-
-
 
 .criteria-details {
   position: relative;

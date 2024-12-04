@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './components/Header';
 import LeftPanel from './components/LeftPanel';
 import CenterPanel from './components/CenterPanel';
-import RightPanel from './components/RightPanel';
 import './App.css';
 
 const App: React.FC = () => {
@@ -12,7 +11,6 @@ const App: React.FC = () => {
       <div className="main-content">
         <LeftPanel />
         <CenterPanel />
-        {/*<RightPanel />*/}
       </div>
     </div>
   );
