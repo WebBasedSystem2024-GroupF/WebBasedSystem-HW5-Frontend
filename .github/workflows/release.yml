@@ -74,6 +74,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: web-system-hw5-${{ env.NODE_ENV }}
+          service: web-system-hw5
           cluster: insta-leader
           wait-for-service-stability: true
