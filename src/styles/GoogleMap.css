@@ -149,3 +149,21 @@
 .toggle-button:hover {
   background-color: #f0f0f0;
 }
+
+.search-again-button {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.search-again-button:hover {
+  background-color: #0056b3;
+}
