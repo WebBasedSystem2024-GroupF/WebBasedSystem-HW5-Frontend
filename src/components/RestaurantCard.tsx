@@ -1,15 +1,31 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '@/styles/RestaurantCard.css';
 
-const RestaurantCard: React.FC = () => {
+interface RestaurantCardProps {
+  name: string;
+  address: string;
+  avgRating: number;
+  category: string;
+  id: string; // Add an id prop for navigation
+}
+
+const RestaurantCard: React.FC<RestaurantCardProps> = ({ name, address, avgRating, category, id }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/restaurant/${id}`);
+  };
+
   return (
-    <div className="restaurant-card">
-      <img src="restaurant.png" alt="Restaurant" />
-      <h4>Restaurant Name</h4>
-      <p>Rating: 4.5</p>
-      <p>Distance: 1.2 km</p>
-      <p>Price Range: $$</p>
-      <p>Recommended for: Great ambiance</p>
-      <button>More Info</button>
+    <div className="restaurant-card" onClick={handleClick}>
+      <div className="image-container">
+        <img src="restaurant.png" alt="Restaurant" />
+      </div>
+      <h4>{name}</h4>
+      <p>Address: {address}</p>
+      <p>Rating: {avgRating}</p>
+      {/*<p>Category: {category}</p>*/}
     </div>
   );
 };

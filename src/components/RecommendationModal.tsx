@@ -1,18 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import RestaurantCard from './RestaurantCard';
 import CriteriaBar from './CriteriaBar';
 import ArrowIcon from '@/assets/arrow_down.svg';
 import '@/styles/GoogleMap.css';
 
+interface Restaurant {
+  gmap_id: string;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  category: string;
+  avg_rating: number;
+}
+
 const RecommendationModal: React.FC = () => {
   const [showMore, setShowMore] = useState(false);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const effectRan = useRef(false);
+
+  const fetchRestaurants = useCallback(async (page: number) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/data?page=${page}`);
+      const data = await response.json();
+      setRestaurants(prevRestaurants => [...prevRestaurants, ...data.data]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!effectRan.current) {
+      fetchRestaurants(currentPage);
+      effectRan.current = true;
+
+      setTimeout(() => {
+        // Reset the effectRan flag after 1 second
+        effectRan.current = false;
+      }, 800);
+    }
+  }, [currentPage, fetchRestaurants]);
 
   const handleToggle = () => {
     setShowMore(!showMore);
   };
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop - 10 <= clientHeight && !loading) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+  };
+
   return (
-    <div className="modal">
+    <div className="modal" onScroll={handleScroll}>
       <div className="modal-header">
         <button className="back-button">Back</button>
       </div>
@@ -44,9 +90,17 @@ const RecommendationModal: React.FC = () => {
         </div>
         <div className="recommendation-list">
           <h3>Top Recommendations</h3>
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
+          {restaurants.map(restaurant => (
+            <RestaurantCard
+              key={restaurant.gmap_id}
+              id={restaurant.gmap_id}
+              name={restaurant.name}
+              address={restaurant.address}
+              avgRating={restaurant.avg_rating}
+              category={restaurant.category}
+            />
+          ))}
+          {loading && <div>Loading more...</div>}
         </div>
       </div>
     </div>

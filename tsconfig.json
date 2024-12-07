@@ -13,7 +13,11 @@
     "resolveJsonModule": true,                // Include modules imported with .json extension
     "isolatedModules": true,                  // Ensure each file can be safely transpiled without relying on other imports
     "noEmit": true,                           // Do not emit outputs
-    "jsx": "react-jsx"                        // Specify JSX code generation
+    "jsx": "react-jsx",                       // Specify JSX code generation
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": ["src"]                          // Include all files in the src directory
 }

@@ -10,4 +10,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/place': {
+        target: 'https://maps.googleapis.com/maps/api/place',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/place/, ''),
+      },
+    },
+  },
 })
