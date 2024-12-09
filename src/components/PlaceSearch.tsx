@@ -6,21 +6,28 @@ const PlaceSearch: React.FC = () => {
   const [placeId, setPlaceId] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSearch = async () => {
-    try {
-      const response = await fetch(
-        `/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=place_id&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`
-      );
-      const data = await response.json();
-      if (data.status === 'OK' && data.candidates.length > 0) {
-        setPlaceId(data.candidates[0].place_id);
-      } else {
-        console.error('No place found or invalid request:', data.error_message);
-      }
-    } catch (error) {
-      console.error('Error fetching place ID:', error);
+const handleSearch = async () => {
+  try {
+    const response = await fetch('/api/place', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        place_name: query,
+        location: { lat: 37.7749, lng: -122.4194 }, // Example location
+      }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      setPlaceId(data.place_id);
+    } else {
+      console.error('Error:', data.error);
     }
-  };
+  } catch (error) {
+    console.error('Error fetching place details:', error);
+  }
+};
 
   return (
     <div className="modal">

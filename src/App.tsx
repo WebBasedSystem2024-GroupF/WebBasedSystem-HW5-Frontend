@@ -5,8 +5,8 @@ import LeftPanel from '@/components/LeftPanel';
 import CenterPanel from '@/components/CenterPanel';
 import RestaurantDetail from '@/components/RestaurantDetail';
 import RecommendationModal from '@/components/RecommendationModal';
-import './App.css';
 import PlaceSearch from '@/components/PlaceSearch';
+import './App.css';
 
 const App: React.FC = () => {
   return (
@@ -17,8 +17,8 @@ const App: React.FC = () => {
         <CenterPanel>
           <Router>
             <Routes>
-              <Route path="/" element={<RecommendationModal />}/>
-              <Route path='/search' element={<PlaceSearch />}/>
+              <Route path="/" element={<RecommendationModal/>}/>
+              <Route path="/search" element={<PlaceSearch/>}/>
               <Route path="/restaurant/:id" element={<RestaurantDetail/>}/>
             </Routes>
           </Router>

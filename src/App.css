@@ -59,7 +59,6 @@ button.img_btn:hover {
   position: relative;
   width: 300px;
   padding: 8px;
-  overflow: auto;
 }
 
 .center-panel {

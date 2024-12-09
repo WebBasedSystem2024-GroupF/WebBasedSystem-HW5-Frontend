@@ -13,9 +13,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://team-f.gpu.seongbum.com/flask',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/place': {
         target: 'https://maps.googleapis.com/maps/api/place',
