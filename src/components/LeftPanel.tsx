@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
-import useResizer from '../hooks/useResizer';
-import PromptRecommendation from '@/components/PromptRecommendation';
 import ChatInput from '@/components/ChatInput';
 import Chat from './Chat';
+import useResizer from '../hooks/useResizer';
 import '@/styles/LeftPanel.css';
 
 export interface ChatProps {
@@ -26,12 +25,9 @@ const LeftPanel: React.FC = () => {
   };
 
   return (
-    <aside className="panel left-panel" ref={leftPanelRef} style={{width: 300}}>
-      <div className="resizer" id="resizer" ref={resizerRef}/>
-      {!messages.length && (
-        <PromptRecommendation onClickRecommendation={handleSendMessage}/>
-      )}
-      <Chat messages={messages} onSendMessage={handleSendMessage} onClearMessages={handleClearMessages}/>
+    <aside className='panel left-panel' ref={leftPanelRef} style={{width: 300}}>
+      <div className='resizer' id='resizer' ref={resizerRef}/>
+      <Chat messages={messages} onSendMessage={handleSendMessage} onClearMessages={handleClearMessages} clearMarkers={() => {}}/>
       <ChatInput onSendMessage={handleSendMessage}/>
     </aside>
   );

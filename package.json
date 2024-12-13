@@ -12,6 +12,7 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
     "@react-google-maps/api": "^2.20.3",
+    "@tanstack/react-query": "^5.62.7",
     "@types/node": "^22.10.1",
     "path": "^0.12.7",
     "react": "^18.3.1",

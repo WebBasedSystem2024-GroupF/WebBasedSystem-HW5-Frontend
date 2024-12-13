@@ -1,0 +1,21 @@
+.header-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.photos img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.review {
+  margin-bottom: 10px;
+}

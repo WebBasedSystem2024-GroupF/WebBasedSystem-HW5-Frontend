@@ -1,30 +1,44 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {useRestaurantDetails} from '@/hooks/useRestaurantDetails';
 import '@/styles/RestaurantCard.css';
 
 interface RestaurantCardProps {
   name: string;
-  address: string;
-  avgRating: number;
-  category: string;
-  id: string; // Add an id prop for navigation
+  latitude: number;
+  longitude: number;
+  id: string;
 }
 
-const RestaurantCard: React.FC<RestaurantCardProps> = ({ name, address, avgRating, category, id }) => {
+const RestaurantCard: React.FC<RestaurantCardProps> = ({name, id, latitude, longitude}) => {
   const navigate = useNavigate();
+  const {data, isLoading, error} = useRestaurantDetails(name, latitude, longitude);
 
   const handleClick = () => {
-    navigate(`/restaurant/${id}`);
+    navigate(`/restaurant/${id}?name=${name}&lat=${latitude}&lng=${longitude}`);
   };
 
   return (
     <div className="restaurant-card" onClick={handleClick}>
       <div className="image-container">
-        <img src="restaurant.png" alt="Restaurant" />
+        {isLoading && <div>Loading...</div>}
+        {error && <div>Error loading details</div>}
+        {!isLoading && !error && data?.imageUrl ? (
+          <img src={data.imageUrl} alt="Restaurant"/>
+        ) : (
+          <img src="restaurant.png" alt="Restaurant"/>
+        )}
       </div>
       <h4>{name}</h4>
-      <p>Address: {address}</p>
-      <p>Rating: {avgRating}</p>
+      {isLoading ?
+        (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <p>Address: {data.formatted_address}</p>
+            <p>Rating: {data.rating?.toFixed(1) ?? 'unknown'}</p>
+          </>
+        )}
       {/*<p>Category: {category}</p>*/}
     </div>
   );
