@@ -9,6 +9,11 @@ import './App.css';
 
 const App: React.FC = () => {
   const mapRef = React.useRef<google.maps.Map | null>(null);
+  const [searchTrigger, setSearchTrigger] = React.useState(0);
+
+  const searchAgain = () => {
+    setSearchTrigger(searchTrigger + 1);
+  }
 
   const setMapRef = (ref: google.maps.Map | null) => {
     mapRef.current = ref;
@@ -21,7 +26,7 @@ const App: React.FC = () => {
         <Router>
           <LeftPanel/>
           <main className="panel center-panel">
-            <GoogleMapComponent setMapRef={setMapRef}>
+            <GoogleMapComponent setMapRef={setMapRef} searchAgain={searchAgain}>
               <Routes>
                 <Route path="/" element={<></>}/>
                 <Route path="/search" element={<RecommendationModal mapRef={mapRef}/>}/>

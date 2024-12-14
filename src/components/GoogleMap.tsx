@@ -1,11 +1,11 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import { useRecommendations } from '@/hooks/useRecommendations';
 import '@/styles/GoogleMap.css';
 
 interface GoogleMapComponentProps {
   children?: React.ReactNode;
   setMapRef: (ref: google.maps.Map | null) => void;
+  searchAgain: () => void;
 }
 
 const containerStyle = {
@@ -18,14 +18,9 @@ const initialCenter = {
   lng: -118.2437
 };
 
-const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, setMapRef }) => {
-  const [mapCenter, setMapCenter] = useState(initialCenter);
+const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, setMapRef, searchAgain }) => {
   const [showButton, setShowButton] = useState(false);
   const mapInstance = useRef<google.maps.Map | null>(null);
-
-  const bounds = mapInstance.current?.getBounds() ?? null;
-  const scores = '0,0,0,0,0'; // Replace with actual scores if needed
-  // const { data, isLoading, error } = useRecommendations(bounds, scores);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
@@ -33,14 +28,13 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, setMa
     map.addListener('center_changed', () => {
       const center = map.getCenter();
       if (center) {
-        setMapCenter({ lat: center.lat(), lng: center.lng() });
         setShowButton(true);
       }
     });
   }, []);
 
   const handleSearchAgain = () => {
-    console.log('Searching again at:', mapCenter);
+    searchAgain();
     setShowButton(false);
   };
 
