@@ -50,7 +50,7 @@
 .recommendation-list {
   display: flex;
   position: absolute;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: calc(100% - 32px);
   padding-bottom: 16px;
   gap: 10px;

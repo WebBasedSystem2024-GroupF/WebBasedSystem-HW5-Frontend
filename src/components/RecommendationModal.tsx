@@ -58,8 +58,9 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({recommendation
 
         <CriteriaList/>
 
+        <br/>
+        <h3>Top Recommendations</h3>
         <div className="recommendation-list">
-          <h3>Top Recommendations</h3>
           {isLoading && <div>Loading...</div>}
           {error && <div>{error.message}</div>}
           {data && data.pages.length === 0 && <div>No recommendations found</div>}
