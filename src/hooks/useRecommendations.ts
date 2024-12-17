@@ -1,4 +1,5 @@
 import { useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
+import {Bounds} from '@/utils/bounds';
 
 interface Restaurant {
   gmap_id: string;
@@ -15,21 +16,23 @@ interface RecommendationResponse {
   nextPage: number;
 }
 
-const fetchRecommendations = async ({ pageParam = 1, queryKey }: QueryFunctionContext<[string, google.maps.LatLngBounds | null, string]>) => {
+const fetchRecommendations = async ({ pageParam = 1, queryKey }: QueryFunctionContext<[string, Bounds | null, string]>) => {
   const [_, bounds, scores] = queryKey;
-  const startLat = bounds?.getSouthWest().lat() ?? 0;
-  const startLng = bounds?.getSouthWest().lng() ?? 0;
-  const endLat = bounds?.getNorthEast().lat() ?? 0;
-  const endLng = bounds?.getNorthEast().lng() ?? 0;
 
-  const url = `/api/restaurants?page=${pageParam}&start_lat=${startLat}&start_lng=${startLng}&end_lat=${endLat}&end_lng=${endLng}&topic=${scores}`;
+  if (!bounds || scores === '0,0,0,0,0') {
+    return { restaurants: [], nextPage: 1 } as RecommendationResponse;
+  }
+
+  const { south, west, north, east } = bounds;
+
+  const url = `/api/restaurants?page=${pageParam}&start_lat=${south}&start_lng=${west}&end_lat=${north}&end_lng=${east}&topic=${scores}`;
   const response = await fetch(url);
   const data = await response.json();
 
   return { restaurants: data.restaurants, nextPage: pageParam as number + 1 } as RecommendationResponse;
 };
 
-export const useRecommendations = (bounds: google.maps.LatLngBounds | null, scores: string) => {
+export const useRecommendations = (bounds: Bounds | null, scores: string) => {
   return useInfiniteQuery<RecommendationResponse, Error>({
     queryKey: ['recommendations', bounds, scores],
     queryFn: fetchRecommendations as any,

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import {getFixedBounds} from '@/utils/bounds';
 import '@/styles/GoogleMap.css';
 
 interface GoogleMapComponentProps {
   children?: React.ReactNode;
-  setMapRef: (ref: google.maps.Map | null) => void;
-  searchAgain: () => void;
+  onSearchAgain: (bounds: google.maps.LatLngBounds | undefined) => void;
 }
 
 const containerStyle = {
@@ -18,39 +18,34 @@ const initialCenter = {
   lng: -118.2437
 };
 
-const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, setMapRef, searchAgain }) => {
+const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, onSearchAgain }) => {
   const [showButton, setShowButton] = useState(false);
   const mapInstance = useRef<google.maps.Map | null>(null);
 
   const onLoad = useCallback((map: google.maps.Map) => {
-    setMapRef(map);
     mapInstance.current = map;
+
+    setTimeout(() => {
+      if (mapInstance.current)
+        onSearchAgain(mapInstance.current.getBounds());
+    }, 700);
+
     map.addListener('center_changed', () => {
       const center = map.getCenter();
-      if (center) {
+      const isNotHome = window.location.pathname !== '/';
+
+      if (center && isNotHome) {
         setShowButton(true);
       }
     });
   }, []);
 
   const handleSearchAgain = () => {
-    searchAgain();
+    if (mapInstance.current) {
+      onSearchAgain(mapInstance.current.getBounds());
+    }
     setShowButton(false);
   };
-
-  // useEffect(() => {
-  //   if (mapInstance.current && data) {
-  //     data.pages.forEach(page => {
-  //       page.restaurants.forEach(restaurant => {
-  //         new google.maps.Marker({
-  //           position: { lat: restaurant.latitude, lng: restaurant.longitude },
-  //           map: mapInstance.current,
-  //           title: restaurant.name,
-  //         });
-  //       });
-  //     });
-  //   }
-  // }, [data]);
 
   return (
     <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
@@ -68,8 +63,6 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, setMa
             Search Here Again
           </button>
         )}
-        {/*{isLoading && <div>Loading...</div>}*/}
-        {/*{error && <div>Error loading map data</div>}*/}
       </div>
     </LoadScript>
   );

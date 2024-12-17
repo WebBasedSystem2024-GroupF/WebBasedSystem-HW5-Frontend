@@ -1,20 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useRecommendations } from '@/hooks/useRecommendations';
+import React from 'react';
+import {InfiniteData} from '@tanstack/react-query';
+import CriteriaList from '@/components/CriteriaList';
 import RestaurantCard from './RestaurantCard';
 import '@/styles/GoogleMap.css';
-import CriteriaList from '@/components/CriteriaList';
 
-interface RecommendationModalProps {
-  mapRef: React.RefObject<google.maps.Map | null>;
+type Restaurant = {
+  gmap_id: string;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  category: string;
+  avg_rating: number;
 }
 
-const RecommendationModal: React.FC<RecommendationModalProps> = ({ mapRef }) => {
-  const location = useLocation();
-  const query = new URLSearchParams(window.location.search);
-  const scores = query.get('topic') ?? '0,0,0,0,0';
+type RecommendationResponse = {
+  restaurants: Restaurant[];
+  nextPage: number;
+}
 
-  const bounds = mapRef.current?.getBounds() ?? null;
+interface RecommendationModalProps {
+  recommendations: {
+    data: InfiniteData<RecommendationResponse> | undefined;
+    isLoading: boolean;
+    error: Error | null;
+    fetchNextPage: () => void;
+    hasNextPage: boolean | undefined;
+    isFetchingNextPage: boolean;
+  };
+}
+
+const RecommendationModal: React.FC<RecommendationModalProps> = ({recommendations}) => {
   const {
     data,
     isLoading,
@@ -22,28 +38,10 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ mapRef }) => 
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useRecommendations(bounds, scores);
-
-  useEffect(() => {
-    // Reset the query when the location changes
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (mapRef.current && data) {
-      data.pages.forEach(page => {
-        page.restaurants.forEach(restaurant => {
-          new google.maps.Marker({
-            position: { lat: restaurant.latitude, lng: restaurant.longitude },
-            map: mapRef.current,
-            title: restaurant.name,
-          });
-        });
-      });
-    }
-  }, [data, mapRef]);
+  } = recommendations;
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const {scrollTop, scrollHeight, clientHeight} = e.currentTarget;
     if (scrollHeight - scrollTop - 10 <= clientHeight && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
@@ -58,7 +56,7 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ mapRef }) => 
       <div className="modal-body">
         <h3>Recommendations</h3>
 
-        <CriteriaList />
+        <CriteriaList/>
 
         <div className="recommendation-list">
           <h3>Top Recommendations</h3>
@@ -66,7 +64,7 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ mapRef }) => 
           {error && <div>{error.message}</div>}
           {data?.pages.map((page, pageIndex) => (
             <React.Fragment key={pageIndex}>
-              {page.restaurants.map(restaurant => (
+              {page.restaurants && page.restaurants.map(restaurant => (
                 <RestaurantCard
                   key={restaurant.gmap_id}
                   id={restaurant.gmap_id}

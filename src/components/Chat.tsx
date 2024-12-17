@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef} from 'react';
 import PromptRecommendation from '@/components/PromptRecommendation';
 import useChat from '@/hooks/useChat';
 import Refresh from '@/assets/refresh.svg';
 
 interface ChatProps {
-  messages: { text: string, isUser: boolean }[];
+  messages: { text: string, isUser: boolean, isMuted?: boolean }[];
   onSendMessage: (text: string, isUser: boolean) => void;
   onClearMessages: () => void;
-  clearMarkers: () => void;
+  setScores: (scores: string) => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, onClearMessages, clearMarkers }) => {
+const Chat: React.FC<ChatProps> = ({messages, onSendMessage, onClearMessages, setScores}) => {
   const chatContentsRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -18,7 +18,8 @@ const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, onClearMessages, c
     error,
     handleRetry,
     handleRefreshClick,
-  } = useChat(messages, onSendMessage, onClearMessages, clearMarkers);
+    toggleMuteMessage,
+  } = useChat(messages, onSendMessage, onClearMessages, setScores);
 
   useEffect(() => {
     toLastMessage();
@@ -34,13 +35,13 @@ const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, onClearMessages, c
   };
 
   return !messages.length ? (
-    <PromptRecommendation onClickRecommendation={onSendMessage} />
+    <PromptRecommendation onClickRecommendation={onSendMessage}/>
   ) : (
     <>
       <div className="chat-header">
         <h2>Chat</h2>
         <button className="img_btn" aria-label="new chat" title="new chat" onClick={handleRefreshClick}>
-          <img src={Refresh} alt="" />
+          <img src={Refresh} alt=""/>
         </button>
       </div>
 
@@ -48,24 +49,24 @@ const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, onClearMessages, c
         <div className="gradient-overlay top"></div>
         {!!messages.length && (
           <div className="chat-contents">
-            <div className="chat-messages">
-              {messages.map((message, index) => (
-                <div key={index} className={`chat-bubble ${message.isUser ? 'user' : 'response'}`}>
-                  {message.text}
-                </div>
-              ))}
-              {loading && (
-                <div className="chat-bubble response">
-                  Generating response...
-                </div>
-              )}
-              {error && (
-                <div className="chat-bubble response" style={{ backgroundColor: 'FF000020' }}>
-                  {error}
-                  <button className="retry-button" onClick={handleRetry}>Retry</button>
-                </div>
-              )}
-            </div>
+            {messages.map((message, index) => (
+              <ChatComponent
+                key={index}
+                message={message}
+                toggleMuteMessage={() => toggleMuteMessage(index)} />
+            ))}
+            {loading && (
+              <ChatComponent message={{
+                text: 'Generating response...',
+                isUser: false
+              }} toggleMuteMessage={()=>{}} />
+            )}
+            {error && (
+              <div className="chat-bubble response" style={{backgroundColor: 'FF000020'}}>
+                {error}
+                <button className="retry-button" onClick={handleRetry}>Retry</button>
+              </div>
+            )}
           </div>
         )}
         <div className="gradient-overlay bottom"></div>
@@ -73,5 +74,26 @@ const Chat: React.FC<ChatProps> = ({ messages, onSendMessage, onClearMessages, c
     </>
   );
 };
+
+interface ChatComponentProps {
+  message: { text: string, isUser: boolean, isMuted?: boolean, isError?: boolean };
+  toggleMuteMessage: () => void;
+}
+
+const ChatComponent: React.FC<ChatComponentProps> = ({message, toggleMuteMessage}) => {
+  return (
+    <div className="chat-messages">
+      <div
+           className={`chat-bubble ${message.isUser ? 'user' : 'response'} ${message.isMuted ? '' : 'mute'} ${message.isError ? '' : 'error'}`} >
+        {message.text}
+      </div>
+      {message.isUser && (
+        <button onClick={toggleMuteMessage}>
+          {message.isMuted ? 'Unmute' : 'Mute'}
+        </button>
+      )}
+    </div>
+  )
+}
 
 export default Chat;
