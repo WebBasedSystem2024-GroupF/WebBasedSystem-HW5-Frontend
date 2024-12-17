@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { findMostOppositeQuestion } from '@/utils/questions';
+import {useState, useEffect, useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {findMostOppositeQuestion} from '@/utils/questions';
 
 interface Message {
   text: string;
@@ -26,39 +26,47 @@ const useChat = (messages: Message[], onSendMessage: (text: string, isUser: bool
     }
 
     if (!messages.length)
-      navigate('/', { replace: true });
+      navigate('/', {replace: true});
   }, [messages]);
 
+
+  const handleScoreResponse = (topicScore: number[]) => {
+    const scores = topicScore.map(v => v.toFixed(3)).join(',');
+    setScores(scores);
+    navigate('/search?topic=' + scores);
+
+    const message = findMostOppositeQuestion(topicScore);
+    if (message) {
+      onSendMessage(message, false);
+    }
+  };
+
   const fetchScore = async (userMessages: string) => {
+    if (!userMessages) {
+      handleScoreResponse([0, 0, 0, 0, 0]);
+      return;
+    }
+
     setLoading(true);
     setError(null);
+
     try {
-      const scoreResponse = await fetch('/api/scores', {
+      const response = await fetch('/api/scores', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: userMessages })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text: userMessages})
       });
-      const scoreData: TopicScore = await scoreResponse.json();
+      const data: TopicScore = await response.json();
 
-      if (!scoreData.topicScore) {
-        throw new Error(scoreData.error);
+      if (!data.topicScore) {
+        throw new Error(data.error);
       }
 
-      const scores = scoreData.topicScore.map(v => v.toFixed(3)).join(',');
-      setScores(scores);
-      navigate('/search?topic=' + scores);
-
-      const message = findMostOppositeQuestion(scoreData.topicScore);
-
-      if (message) {
-        onSendMessage(message, false);
-      }
+      handleScoreResponse(data.topicScore);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       }
-      // onSendMessage('An error occurred while fetching the response.', false);
-      // console.error('Error fetching score:', error);
     } finally {
       setLoading(false);
     }
@@ -82,9 +90,16 @@ const useChat = (messages: Message[], onSendMessage: (text: string, isUser: bool
     const lastUserMessage = lastUserMessageIndex !== -1 ? updatedMessages[updatedMessages.length - 1 - lastUserMessageIndex] : null;
 
     if (updatedMessages[index].isMuted) {
-      updatedMessages[index] = lastUserMessage ? { ...lastUserMessage, isUser: true } : { text: 'No response', isUser: true };
+      updatedMessages[index] = lastUserMessage ? {...lastUserMessage, isUser: true} : {
+        text: 'No response',
+        isUser: true
+      };
     } else {
-      updatedMessages[index] = lastUserMessage ? { ...lastUserMessage, isUser: true, isMuted: false } : { text: 'No response', isUser: true, isMuted: false };
+      updatedMessages[index] = lastUserMessage ? {
+        ...lastUserMessage,
+        isUser: true,
+        isMuted: false
+      } : {text: 'No response', isUser: true, isMuted: false};
     }
 
     const userMessages = updatedMessages.filter(message => message.isUser && !message.isMuted)

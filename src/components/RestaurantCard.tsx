@@ -1,6 +1,7 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useRestaurantDetails} from '@/hooks/useRestaurantDetails';
+import ImageNone from '@/assets/img_none.svg';
 import '@/styles/RestaurantCard.css';
 
 interface RestaurantCardProps {
@@ -26,7 +27,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({name, id, latitude, long
         {!isLoading && !error && data?.imageUrl ? (
           <img src={data.imageUrl} alt="Restaurant image"/>
         ) : (
-          <img src="restaurant.png" alt="Restaurant image"/>
+          <div className="img-none-container card-thumbnail">
+            <img src={ImageNone} alt="Restaurant image"/>
+          </div>
         )}
       </div>
       <h4>{name}</h4>

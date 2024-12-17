@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
 import Comment from '@/components/Comment';
+import ImageNone from '@/assets/img_none.svg';
 import '@/styles/RestaurantDetail.css';
 
 interface RestaurantDetailProps {
@@ -21,7 +22,7 @@ interface RestaurantDetailProps {
 }
 
 const RestaurantDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const {id} = useParams<{ id: string }>();
   const [restaurant, setRestaurant] = useState<RestaurantDetailProps | null>(null);
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
@@ -39,7 +40,7 @@ const RestaurantDetail: React.FC = () => {
           },
           body: JSON.stringify({
             place_name: name,
-            location: { lat, lng }
+            location: {lat, lng}
           }),
         });
         const data = await response.json();
@@ -73,17 +74,24 @@ const RestaurantDetail: React.FC = () => {
         <button className="back-button" onClick={() => navigate(-1)}>Back</button>
       </div>
 
-      {restaurant && restaurant.photos.length > 0 && (
+      {restaurant && restaurant.photos.length > 0 ? (
         <img
-          className="header-image"
+          className="header-image" key={restaurant.photos[0].photo_reference}
           src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${restaurant.photos[0].photo_reference}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
           alt="Restaurant"
         />
+      ) : (
+
+        <div className="img-none-container header-image">
+          <img src={ImageNone} alt="Restaurant image"/>
+        </div>
       )}
 
       <div className="modal-body">
         {!restaurant ? (
-          <div>Loading...</div>
+          <div>
+            <h2>Loading...</h2>
+          </div>
         ) : (
           <div>
             <h2>{restaurant.name}</h2>

@@ -23,7 +23,8 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ setScores }) => {
   const handleSendMessage = (text: string, isUser: boolean) => {
     setMessages(prevMessages => {
       const updatedMessages = [...prevMessages];
-      if (updatedMessages.length > 0 && !updatedMessages[updatedMessages.length - 1].isUser) {
+
+      if (updatedMessages.length > 1 && !updatedMessages[updatedMessages.length - 1].isUser && !isUser) {
         updatedMessages[updatedMessages.length - 1] = { text, isUser };
       } else {
         updatedMessages.push({ text, isUser });
