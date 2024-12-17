@@ -62,6 +62,7 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({recommendation
           <h3>Top Recommendations</h3>
           {isLoading && <div>Loading...</div>}
           {error && <div>{error.message}</div>}
+          {data && data.pages.length === 0 && <div>No recommendations found</div>}
           {data?.pages.map((page, pageIndex) => (
             <React.Fragment key={pageIndex}>
               {page.restaurants && page.restaurants.map(restaurant => (

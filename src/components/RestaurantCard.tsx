@@ -24,9 +24,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({name, id, latitude, long
         {isLoading && <div>Loading...</div>}
         {error && <div>Error loading details</div>}
         {!isLoading && !error && data?.imageUrl ? (
-          <img src={data.imageUrl} alt="Restaurant"/>
+          <img src={data.imageUrl} alt="Restaurant image"/>
         ) : (
-          <img src="restaurant.png" alt="Restaurant"/>
+          <img src="restaurant.png" alt="Restaurant image"/>
         )}
       </div>
       <h4>{name}</h4>

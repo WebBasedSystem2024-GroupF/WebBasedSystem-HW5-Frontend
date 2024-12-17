@@ -16,5 +16,7 @@
 .image-container img {
   transition: transform 0.3s ease;
   width: 100%;
-  height: auto;
+  height: 148px;
+  object-fit: cover;
+  object-position: center;
 }

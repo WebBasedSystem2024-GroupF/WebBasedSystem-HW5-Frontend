@@ -11,7 +11,7 @@ interface Restaurant {
   avg_rating: number;
 }
 
-interface RecommendationResponse {
+export interface RecommendationResponse {
   restaurants: Restaurant[];
   nextPage: number;
 }

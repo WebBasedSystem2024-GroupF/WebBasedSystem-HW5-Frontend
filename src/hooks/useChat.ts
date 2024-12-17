@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { findMostOppositeQuestion } from '@/utils/questions';
 import { useNavigate } from 'react-router-dom';
+import { findMostOppositeQuestion } from '@/utils/questions';
 
 interface Message {
   text: string;
@@ -57,8 +57,8 @@ const useChat = (messages: Message[], onSendMessage: (text: string, isUser: bool
       if (error instanceof Error) {
         setError(error.message);
       }
-      onSendMessage('An error occurred while fetching the response.', false);
-      console.error('Error fetching score:', error);
+      // onSendMessage('An error occurred while fetching the response.', false);
+      // console.error('Error fetching score:', error);
     } finally {
       setLoading(false);
     }

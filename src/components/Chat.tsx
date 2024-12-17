@@ -1,10 +1,18 @@
 import React, {useEffect, useRef} from 'react';
 import PromptRecommendation from '@/components/PromptRecommendation';
+import ChatComponent from '@/components/ChatComponent';
 import useChat from '@/hooks/useChat';
 import Refresh from '@/assets/refresh.svg';
 
+
+export interface ChatMessage {
+  text: string;
+  isUser: boolean;
+  isMuted?: boolean;
+}
+
 interface ChatProps {
-  messages: { text: string, isUser: boolean, isMuted?: boolean }[];
+  messages: ChatMessage[];
   onSendMessage: (text: string, isUser: boolean) => void;
   onClearMessages: () => void;
   setScores: (scores: string) => void;
@@ -62,10 +70,11 @@ const Chat: React.FC<ChatProps> = ({messages, onSendMessage, onClearMessages, se
               }} toggleMuteMessage={()=>{}} />
             )}
             {error && (
-              <div className="chat-bubble response" style={{backgroundColor: 'FF000020'}}>
-                {error}
-                <button className="retry-button" onClick={handleRetry}>Retry</button>
-              </div>
+              <ChatComponent message={{
+                text: `Error: ${error}`,
+                isUser: false,
+                isError: true
+              }} toggleMuteMessage={()=>{}} handleRetry={handleRetry} />
             )}
           </div>
         )}
@@ -74,26 +83,5 @@ const Chat: React.FC<ChatProps> = ({messages, onSendMessage, onClearMessages, se
     </>
   );
 };
-
-interface ChatComponentProps {
-  message: { text: string, isUser: boolean, isMuted?: boolean, isError?: boolean };
-  toggleMuteMessage: () => void;
-}
-
-const ChatComponent: React.FC<ChatComponentProps> = ({message, toggleMuteMessage}) => {
-  return (
-    <div className="chat-messages">
-      <div
-           className={`chat-bubble ${message.isUser ? 'user' : 'response'} ${message.isMuted ? '' : 'mute'} ${message.isError ? '' : 'error'}`} >
-        {message.text}
-      </div>
-      {message.isUser && (
-        <button onClick={toggleMuteMessage}>
-          {message.isMuted ? 'Unmute' : 'Mute'}
-        </button>
-      )}
-    </div>
-  )
-}
 
 export default Chat;
