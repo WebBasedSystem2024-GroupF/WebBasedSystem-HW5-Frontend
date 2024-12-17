@@ -3,6 +3,8 @@ interface Question {
   weights: number[];
 }
 
+const THRESHOLD = 0.5;
+
 const questions: Question[] = [
   { text: "How do you rate the service quality at your favorite restaurant?", weights: [0.11111129075288773, 0.11111129075288773, 0.11111129075288773, 0.5555548667907715, 0.11111129075288773] },
   { text: "What service qualities do you think are essential for a great dining experience?", weights: [0.07934339344501495, 0.07692376524209976, 0.23076674342155457, 0.23077085614204407, 0.38219523429870605] },
@@ -27,19 +29,24 @@ export const oppositeScore = (scores: number[]): number[] => {
   return scores.map(score => 1 - score);
 }
 
+
 export const findMostOppositeQuestion = (scores: number[]): Question['text'] => {
-  let minSimilarity = Infinity;
+  let maxSimilarity = -Infinity;
   let mostOppositeQuestion = questions[0];
   const oppositeScores = oppositeScore(scores);
 
   for (const question of questions) {
     const similarity = cosineSimilarity(oppositeScores, question.weights);
-    if (similarity < minSimilarity) {
-      minSimilarity = similarity;
+    if (similarity > maxSimilarity) {
+      maxSimilarity = similarity;
       mostOppositeQuestion = question;
     }
   }
-  console.log(`Similarity: ${1 - minSimilarity}`, mostOppositeQuestion.weights);
+  console.log(`Similarity: ${maxSimilarity}`, mostOppositeQuestion.weights);
+
+  if (maxSimilarity < THRESHOLD) {
+    return "If there is anything else you would like to share, please let us know.";
+  }
 
   return mostOppositeQuestion.text;
 };

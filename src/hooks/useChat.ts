@@ -29,15 +29,18 @@ const useChat = (messages: Message[], onSendMessage: (text: string, isUser: bool
       navigate('/', {replace: true});
   }, [messages]);
 
-
   const handleScoreResponse = (topicScore: number[]) => {
     const scores = topicScore.map(v => v.toFixed(3)).join(',');
     setScores(scores);
     navigate('/search?topic=' + scores);
 
     const message = findMostOppositeQuestion(topicScore);
+
     if (message) {
-      onSendMessage(message, false);
+      const lastNonUserMessage = messages.slice().reverse().find(msg => !msg.isUser);
+      if (!lastNonUserMessage || lastNonUserMessage.text !== message) {
+        onSendMessage(message, false);
+      }
     }
   };
 

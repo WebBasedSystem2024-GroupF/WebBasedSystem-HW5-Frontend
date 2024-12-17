@@ -12,6 +12,7 @@ type Restaurant = {
   longitude: number;
   category: string;
   avg_rating: number;
+  cosine_similarity: number;
 }
 
 type RecommendationResponse = {
@@ -73,6 +74,7 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({recommendation
                   name={restaurant.name}
                   latitude={restaurant.latitude}
                   longitude={restaurant.longitude}
+                  similarity={restaurant.cosine_similarity}
                 />
               ))}
             </React.Fragment>

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import {getFixedBounds} from '@/utils/bounds';
 import '@/styles/GoogleMap.css';
 
 interface GoogleMapComponentProps {
@@ -53,8 +52,8 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({ children, onSea
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={initialCenter}
-          zoom={10}
           onLoad={onLoad}
+          zoom={10}
         >
           {children}
         </GoogleMap>

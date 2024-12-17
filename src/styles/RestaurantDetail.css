@@ -16,6 +16,33 @@
   border-radius: 4px;
 }
 
-.review {
-  margin-bottom: 10px;
+.comment {
+  margin-bottom: 24px;
+}
+
+.comment p {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin-bottom: 2px;
+}
+
+.comment p.expanded {
+  -webkit-line-clamp: unset;
+}
+
+.show-more-button {
+  background: none;
+  border: none;
+  color: #007BFF;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+  margin-top: 8px;
+}
+
+.show-more-button:hover {
+  color: #0056b3;
 }

@@ -9,9 +9,10 @@ interface RestaurantCardProps {
   latitude: number;
   longitude: number;
   id: string;
+  similarity: number;
 }
 
-const RestaurantCard: React.FC<RestaurantCardProps> = ({name, id, latitude, longitude}) => {
+const RestaurantCard: React.FC<RestaurantCardProps> = ({name, id, latitude, longitude, similarity}) => {
   const navigate = useNavigate();
   const {data, isLoading, error} = useRestaurantDetails(name, latitude, longitude);
 
@@ -38,8 +39,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({name, id, latitude, long
           <p>Loading...</p>
         ) : (
           <>
-            <p>Address: {data.formatted_address}</p>
-            <p>Rating: {data.rating?.toFixed(1) ?? 'unknown'}</p>
+            <p><b>Similarity:</b> <span className='highlight'>{Math.floor(similarity*1000)/10}%</span></p> {/* Add this line */}
+            <p><b>Address:</b> {data.formatted_address}</p>
+            <p><b>Rating:</b> {data.rating?.toFixed(1) ?? 'unknown'}</p>
           </>
         )}
       {/*<p>Category: {category}</p>*/}
