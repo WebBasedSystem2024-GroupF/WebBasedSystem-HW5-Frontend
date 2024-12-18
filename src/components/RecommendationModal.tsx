@@ -2,18 +2,9 @@ import React from 'react';
 import {InfiniteData} from '@tanstack/react-query';
 import CriteriaList from '@/components/CriteriaList';
 import RestaurantCard from './RestaurantCard';
+import {Restaurant} from '@/hooks/useRecommendations';
 import '@/styles/GoogleMap.css';
 
-type Restaurant = {
-  gmap_id: string;
-  name: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  category: string;
-  avg_rating: number;
-  cosine_similarity: number;
-}
 
 type RecommendationResponse = {
   restaurants: Restaurant[];

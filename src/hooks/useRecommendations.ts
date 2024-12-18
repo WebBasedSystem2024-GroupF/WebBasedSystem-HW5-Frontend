@@ -1,7 +1,7 @@
 import { useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
 import {Bounds} from '@/utils/bounds';
 
-interface Restaurant {
+export interface Restaurant {
   gmap_id: string;
   name: string;
   address: string;
@@ -9,6 +9,7 @@ interface Restaurant {
   longitude: number;
   category: string;
   avg_rating: number;
+  cosine_similarity: number;
 }
 
 export interface RecommendationResponse {
