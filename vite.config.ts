@@ -1,27 +1,29 @@
-import { defineConfig } from 'vite'
+import {ConfigEnv, defineConfig, loadEnv} from 'vite';
 import react from '@vitejs/plugin-react'
-import path from 'path'
+import path from 'path';
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://team-f.gpu.seongbum.com/flask',
-        changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      '/place': {
-        target: 'https://maps.googleapis.com/maps/api/place',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/place/, ''),
+export default ({mode}: ConfigEnv) => {
+  const env = loadEnv(mode, process.cwd());
+  const TargetHost = env.VITE_BACKEND_URL ?? 'localhost:5000';
+
+  return defineConfig({
+
+    plugins: [react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
       },
     },
-  },
-})
+    server: {
+      proxy: {
+        '/api': {
+          target: TargetHost,
+          changeOrigin: true,
+          // rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
+    },
+  })
+
+}
